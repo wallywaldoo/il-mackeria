@@ -6,6 +6,7 @@ import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DesktopHeroEntrance,
+  MobileHeroEntrance,
 } from "@/components/motion/hero-entrance";
 import { AnimatedFlagBand } from "@/components/motion/flag-band";
 import { BookingDialogButton } from "@/components/site/booking-dialog";
@@ -15,6 +16,9 @@ import type { Locale } from "@/lib/i18n";
 import { getMenuSectionHref } from "@/lib/i18n";
 import { getUi } from "@/lib/i18n/messages";
 import type { HeroSectionContent } from "@/types/cms-content";
+
+const MOBILE_HERO_WIDTH = 1080;
+const MOBILE_HERO_HEIGHT = 1920;
 
 function HeroAddress({
   variant = "dark",
@@ -56,46 +60,44 @@ function MobileHero({
   const copy = getUi(locale);
 
   return (
-    <div className="hero-mobile-only relative w-full overflow-hidden bg-hero-green">
-      <div className="relative h-[clamp(18rem,58svh,70svh)] w-full overflow-hidden [@media(max-height:700px)]:h-[clamp(16rem,52svh,58svh)]">
+    <div className="hero-mobile-only w-full overflow-hidden bg-hero-green">
+      <div className="relative w-full">
         <Image
           src={content.mobileImage.url}
           alt={content.mobileImage.alt}
-          fill
+          width={MOBILE_HERO_WIDTH}
+          height={MOBILE_HERO_HEIGHT}
           unoptimized
           priority
           loading="eager"
           sizes="100vw"
-          className="object-cover object-[center_48%]"
-        />
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-32 bg-gradient-to-t from-charcoal/45 to-transparent"
-          aria-hidden
+          className="mx-auto block h-auto w-full"
         />
         <h1 className="sr-only">{content.srOnlyTitle}</h1>
-        <DesktopHeroEntrance className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-2 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pt-4">
-          <div className="flex w-full max-w-sm flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
-            <Button
-              className="btn-site-lg w-full rounded-full bg-cream px-8 text-sm font-semibold tracking-[0.15em] text-charcoal uppercase shadow-lg sm:w-auto hover:bg-cream-light"
-              render={<Link href={getMenuSectionHref(locale)} />}
-            >
-              {content.menuButtonLabel || copy.seeMenu}
-            </Button>
-            <BookingDialogButton
-              locale={locale}
-              variant="outline"
-              className="btn-site-lg w-full rounded-full border-cream/80 bg-charcoal/20 px-8 text-sm font-semibold tracking-[0.15em] text-cream uppercase shadow-lg backdrop-blur-sm sm:w-auto hover:bg-charcoal/30 hover:text-cream"
-            >
-              {content.bookingButtonLabel || copy.bookCatering}
-            </BookingDialogButton>
-          </div>
-          <HeroAddress
-            variant="dark"
-            label={content.addressLabel}
-            href={content.addressUrl}
-          />
-        </DesktopHeroEntrance>
       </div>
+
+      <MobileHeroEntrance className="flex flex-col items-center gap-2.5 px-4 pb-5 pt-3">
+        <div className="flex w-full max-w-sm flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
+          <Button
+            className="btn-site-lg w-full rounded-full bg-cream px-8 text-sm font-semibold tracking-[0.15em] text-charcoal uppercase shadow-lg sm:w-auto hover:bg-cream-light"
+            render={<Link href={getMenuSectionHref(locale)} />}
+          >
+            {content.menuButtonLabel || copy.seeMenu}
+          </Button>
+          <BookingDialogButton
+            locale={locale}
+            variant="outline"
+            className="btn-site-lg w-full rounded-full border-cream/80 bg-charcoal/20 px-8 text-sm font-semibold tracking-[0.15em] text-cream uppercase shadow-lg backdrop-blur-sm sm:w-auto hover:bg-charcoal/30 hover:text-cream"
+          >
+            {content.bookingButtonLabel || copy.bookCatering}
+          </BookingDialogButton>
+        </div>
+        <HeroAddress
+          variant="light"
+          label={content.addressLabel}
+          href={content.addressUrl}
+        />
+      </MobileHeroEntrance>
     </div>
   );
 }
