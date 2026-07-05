@@ -3,7 +3,8 @@ export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = "sv";
 
-export function getLocaleFromPathname(pathname: string): Locale {
+export function getLocaleFromPathname(pathname: string | null): Locale {
+  if (!pathname) return defaultLocale;
   return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "sv";
 }
 

@@ -15,8 +15,7 @@ export async function generateMetadata({ params }: NewsPageProps) {
     return pageMetadataEn("News", "News from il mackeria");
   }
 
-  const title =
-    post.title_en ?? post.title_sv;
+  const title = post.title_en ?? post.title_sv;
   const description =
     post.excerpt_en ?? post.excerpt_sv ?? post.content_sv.slice(0, 160);
 

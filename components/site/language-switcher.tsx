@@ -26,7 +26,9 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
 
   return (
     <Link
+      key={pathname ?? "root"}
       href={alternateHref}
+      prefetch={false}
       aria-label={
         switchingToEnglish ? copy.switchToEnglish : copy.switchToSwedish
       }
