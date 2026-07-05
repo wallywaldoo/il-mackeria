@@ -54,12 +54,6 @@ const quickLinks = [
     icon: Clock,
   },
   {
-    href: "/admin/news",
-    label: "Nyheter",
-    description: "Publicera nyheter",
-    icon: Newspaper,
-  },
-  {
     href: "/admin/bookings",
     label: "Bokningar",
     description: "Se bokningsförfrågningar",
