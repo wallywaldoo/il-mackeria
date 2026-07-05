@@ -393,7 +393,7 @@
 
   @media (max-width: 1023px) {
     .instagram-feed-widget {
-      min-height: 328px;
+      min-height: 380px;
       opacity: 0;
       transition: opacity 0.35s ease;
     }
@@ -428,6 +428,17 @@
   .instagram-feed-widget .eapps-instagram-feed-post-image img {
     border-radius: 1rem !important;
   }
+}
+
+/* Elfsight injects inline display:!important on branding links — must stay outside @layer */
+.instagram-feed-widget a[href*="elfsight.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
