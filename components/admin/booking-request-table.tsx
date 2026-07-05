@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { MailCheck } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,12 +17,16 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import type { BookingRequest } from "@/types/site";
 import { BOOKING_TYPES } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 interface Props {
   bookings: BookingRequest[];
 }
 
 export function BookingRequestTable({ bookings }: Props) {
+  const router = useRouter();
+  const [sendingId, setSendingId] = useState<string | null>(null);
+
   async function updateStatus(id: string, status: string) {
     const supabase = createClient();
     const { error } = await supabase
@@ -32,6 +39,40 @@ export function BookingRequestTable({ bookings }: Props) {
       return;
     }
     toast.success("Status uppdaterad");
+    router.refresh();
+  }
+
+  async function sendConfirmation(booking: BookingRequest) {
+    const confirmed = window.confirm(
+      `Skicka en bekräftelse via e-post till ${booking.name} (${booking.email})?\n\nBokningen markeras samtidigt som bekräftad.`,
+    );
+    if (!confirmed) return;
+
+    setSendingId(booking.id);
+    try {
+      const res = await fetch(`/api/admin/bookings/${booking.id}/confirm`, {
+        method: "POST",
+      });
+      const body = (await res.json()) as {
+        success?: boolean;
+        statusUpdated?: boolean;
+        message?: string;
+        error?: string;
+      };
+
+      if (!res.ok || !body.success) {
+        throw new Error(body.error ?? "Kunde inte skicka bekräftelse");
+      }
+
+      toast.success(body.message ?? `Bekräftelse skickad till ${booking.email}`);
+      router.refresh();
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Kunde inte skicka bekräftelse",
+      );
+    } finally {
+      setSendingId(null);
+    }
   }
 
   if (!bookings.length) {
@@ -48,6 +89,7 @@ export function BookingRequestTable({ bookings }: Props) {
             <th className={adminTable.th}>Typ</th>
             <th className={adminTable.th}>Gäster</th>
             <th className={adminTable.th}>Status</th>
+            <th className={adminTable.th}>Bekräftelse</th>
           </tr>
         </thead>
         <tbody className={adminTable.tbody}>
@@ -87,6 +129,19 @@ export function BookingRequestTable({ bookings }: Props) {
                     <SelectItem value="declined">Avböjd</SelectItem>
                   </SelectContent>
                 </Select>
+              </td>
+              <td className={adminTable.td}>
+                <button
+                  type="button"
+                  onClick={() => sendConfirmation(b)}
+                  disabled={sendingId === b.id || b.status === "declined"}
+                  className={cn(
+                    "inline-flex h-9 items-center gap-1.5 rounded-full border border-[color:color-mix(in_srgb,var(--admin-accent,#9E1728)_22%,transparent)] bg-white px-3.5 text-xs font-semibold text-[var(--admin-accent,#9E1728)] shadow-sm transition hover:bg-[var(--admin-info-bg,rgba(158,23,40,0.08))] disabled:cursor-not-allowed disabled:opacity-50",
+                  )}
+                >
+                  <MailCheck className="size-3.5" />
+                  {sendingId === b.id ? "Skickar…" : "Skicka bekräftelse"}
+                </button>
               </td>
             </tr>
           ))}
