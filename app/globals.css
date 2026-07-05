@@ -194,21 +194,21 @@
     @apply block h-auto w-full;
   }
 
-  /* Anchor controls in the green padding baked into hero-mobile.png (~57% down). */
+  /* Anchor controls in the green padding below the sandwich graphic. */
   .hero-mobile-controls {
     @apply absolute inset-x-0 z-10 flex flex-col items-center gap-2 px-4 pb-4;
-    top: 56.5%;
+    top: 72%;
   }
 
   @media (max-height: 700px) {
     .hero-mobile-controls {
-      top: 55.5%;
+      top: 70%;
     }
   }
 
   @media (min-height: 860px) {
     .hero-mobile-controls {
-      top: 57%;
+      top: 74%;
     }
   }
 
