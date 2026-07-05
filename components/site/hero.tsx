@@ -17,6 +17,9 @@ import { getMenuSectionHref } from "@/lib/i18n";
 import { getUi } from "@/lib/i18n/messages";
 import type { HeroSectionContent } from "@/types/cms-content";
 
+const MOBILE_HERO_WIDTH = 1080;
+const MOBILE_HERO_HEIGHT = 1920;
+
 function HeroAddress({
   variant = "dark",
   label,
@@ -58,42 +61,43 @@ function MobileHero({
 
   return (
     <div className="hero-mobile-only w-full overflow-hidden bg-hero-green">
-      <div className="relative aspect-[1080/1100] w-full overflow-hidden">
+      <div className="hero-mobile-frame">
         <Image
           src={content.mobileImage.url}
           alt={content.mobileImage.alt}
-          fill
+          width={MOBILE_HERO_WIDTH}
+          height={MOBILE_HERO_HEIGHT}
           unoptimized
           priority
           loading="eager"
           sizes="100vw"
-          className="object-cover object-top"
+          className="hero-mobile-image"
         />
         <h1 className="sr-only">{content.srOnlyTitle}</h1>
-      </div>
 
-      <MobileHeroEntrance className="flex flex-col items-center gap-2 px-4 pb-4 pt-2">
-        <div className="flex w-full max-w-sm flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
-          <Button
-            className="btn-site-lg w-full rounded-full bg-cream px-8 text-sm font-semibold tracking-[0.15em] text-charcoal uppercase shadow-lg sm:w-auto hover:bg-cream-light"
-            render={<Link href={getMenuSectionHref(locale)} />}
-          >
-            {content.menuButtonLabel || copy.seeMenu}
-          </Button>
-          <BookingDialogButton
-            locale={locale}
-            variant="outline"
-            className="btn-site-lg w-full rounded-full border-cream/80 bg-charcoal/20 px-8 text-sm font-semibold tracking-[0.15em] text-cream uppercase shadow-lg backdrop-blur-sm sm:w-auto hover:bg-charcoal/30 hover:text-cream"
-          >
-            {content.bookingButtonLabel || copy.bookCatering}
-          </BookingDialogButton>
-        </div>
-        <HeroAddress
-          variant="dark"
-          label={content.addressLabel}
-          href={content.addressUrl}
-        />
-      </MobileHeroEntrance>
+        <MobileHeroEntrance className="hero-mobile-controls">
+          <div className="flex w-full max-w-sm flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
+            <Button
+              className="btn-site-lg w-full rounded-full bg-cream px-8 text-sm font-semibold tracking-[0.15em] text-charcoal uppercase shadow-lg sm:w-auto hover:bg-cream-light"
+              render={<Link href={getMenuSectionHref(locale)} />}
+            >
+              {content.menuButtonLabel || copy.seeMenu}
+            </Button>
+            <BookingDialogButton
+              locale={locale}
+              variant="outline"
+              className="btn-site-lg w-full rounded-full border-cream/80 bg-charcoal/20 px-8 text-sm font-semibold tracking-[0.15em] text-cream uppercase shadow-lg backdrop-blur-sm sm:w-auto hover:bg-charcoal/30 hover:text-cream"
+            >
+              {content.bookingButtonLabel || copy.bookCatering}
+            </BookingDialogButton>
+          </div>
+          <HeroAddress
+            variant="dark"
+            label={content.addressLabel}
+            href={content.addressUrl}
+          />
+        </MobileHeroEntrance>
+      </div>
     </div>
   );
 }
