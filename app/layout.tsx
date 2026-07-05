@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sv" className={`${heading.variable} ${body.variable} h-full`}>
-      <body className="min-h-full max-w-[100vw] flex-col antialiased overflow-x-clip flex">
+      <body className="flex min-h-full w-full flex-col overflow-x-clip antialiased">
         <HtmlLang />
         {children}
         <Toaster position="top-center" richColors />

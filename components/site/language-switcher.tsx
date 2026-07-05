@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BritishFlagIcon,
@@ -25,10 +24,8 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   const switchingToEnglish = locale === "sv";
 
   return (
-    <Link
-      key={pathname ?? "root"}
+    <a
       href={alternateHref}
-      prefetch={false}
       aria-label={
         switchingToEnglish ? copy.switchToEnglish : copy.switchToSwedish
       }
@@ -42,6 +39,6 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
       ) : (
         <SwedishFlagIcon className="size-5 rounded-full object-cover" />
       )}
-    </Link>
+    </a>
   );
 }

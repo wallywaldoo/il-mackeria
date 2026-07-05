@@ -128,7 +128,7 @@
     @apply font-sans scroll-smooth overflow-x-clip;
   }
   body {
-    @apply overflow-x-clip max-w-[100vw];
+    @apply w-full overflow-x-clip;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-heading), serif;

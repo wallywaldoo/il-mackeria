@@ -1,38 +1,17 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { DURATION, easeOut, fadeUp, slideLeft, slideRight, viewport } from "@/lib/motion";
-import {
-  isMobileSiteLayout,
-  subscribeMobileSiteLayout,
-} from "@/lib/site-layout";
+import { DURATION, easeOut, fadeUp, viewport } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type RevealDirection = "up" | "left" | "right" | "fade";
 
 const directionVariants = {
   up: fadeUp,
-  left: slideLeft,
-  right: slideRight,
+  left: fadeUp,
+  right: fadeUp,
   fade: { hidden: { opacity: 0 }, show: { opacity: 1 } },
 };
-
-function getMobileSnapshot() {
-  return isMobileSiteLayout();
-}
-
-function getMobileServerSnapshot() {
-  return false;
-}
-
-function useIsMobileSiteLayout() {
-  return useSyncExternalStore(
-    subscribeMobileSiteLayout,
-    getMobileSnapshot,
-    getMobileServerSnapshot,
-  );
-}
 
 interface ScrollRevealProps extends HTMLMotionProps<"div"> {
   delay?: number;
@@ -47,17 +26,14 @@ export function ScrollReveal({
   ...props
 }: ScrollRevealProps) {
   const reduceMotion = useReducedMotion();
-  const isMobile = useIsMobileSiteLayout();
-  const effectiveDirection =
-    isMobile && (direction === "left" || direction === "right") ? "up" : direction;
-  const variants = directionVariants[effectiveDirection];
+  const variants = directionVariants[direction];
 
   return (
     <motion.div
       className={cn("w-full min-w-0", className)}
       variants={variants}
-      initial={reduceMotion ? false : "hidden"}
-      whileInView="show"
+      initial={false}
+      whileInView={reduceMotion ? undefined : "show"}
       viewport={viewport}
       transition={{
         duration: reduceMotion ? 0 : DURATION,

@@ -8,7 +8,8 @@ export function getLocaleFromPathname(pathname: string | null): Locale {
   return pathname === "/en" || pathname.startsWith("/en/") ? "en" : "sv";
 }
 
-export function stripLocalePrefix(pathname: string): string {
+export function stripLocalePrefix(pathname: string | null): string {
+  if (!pathname) return "/";
   if (pathname === "/en") return "/";
   if (pathname.startsWith("/en/")) return pathname.slice(3);
   return pathname;
@@ -22,15 +23,14 @@ export function withLocale(path: string, locale: Locale): string {
   return normalized;
 }
 
-export function getAlternateLocalePath(pathname: string): string {
+export function getAlternateLocalePath(pathname: string | null): string {
   const locale = getLocaleFromPathname(pathname);
   const path = stripLocalePrefix(pathname);
   return withLocale(path, locale === "sv" ? "en" : "sv");
 }
 
-export function isHomePath(pathname: string): boolean {
-  const path = stripLocalePrefix(pathname);
-  return path === "/";
+export function isHomePath(pathname: string | null): boolean {
+  return stripLocalePrefix(pathname) === "/";
 }
 
 export function getMenuSectionHref(locale: Locale): string {
