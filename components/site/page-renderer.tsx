@@ -16,7 +16,7 @@ import { normalizeSectionSettings } from "@/lib/cms/section-presets";
 import { localizeSectionContent } from "@/lib/i18n/localize";
 import type { Locale } from "@/lib/i18n";
 import type { HomePageSection } from "@/types/cms";
-import type { MenuItem, NewsPost, OpeningHour } from "@/types/site";
+import type { MenuItem, NewsPost, OpeningHour, GalleryImage } from "@/types/site";
 import type {
   BookingSectionContent,
   ContentBlocksSectionContent,
@@ -35,6 +35,7 @@ interface PageRendererProps {
   openingHours: OpeningHour[];
   contactEmail: string;
   newsPosts?: NewsPost[];
+  galleryImages?: GalleryImage[];
   locale?: Locale;
   preview?: boolean;
   activeSectionId?: string;
@@ -46,6 +47,7 @@ export function PageRenderer({
   openingHours,
   contactEmail,
   newsPosts = [],
+  galleryImages = [],
   locale = "sv",
   preview = false,
   activeSectionId,
@@ -153,6 +155,8 @@ export function PageRenderer({
                     section.content as InstagramSectionContent,
                     locale,
                   )}
+                  galleryImages={galleryImages}
+                  locale={locale}
                 />
               );
             case "booking":

@@ -1,5 +1,6 @@
 import { PageRenderer } from "@/components/site/page-renderer";
 import {
+  getGalleryImages,
   getMenuItems,
   getNewsPosts,
   getOpeningHours,
@@ -11,13 +12,14 @@ import { homeMetadataEn, restaurantJsonLd } from "@/lib/seo";
 export const metadata = homeMetadataEn;
 
 export default async function EnglishHomePage() {
-  const [menuItems, openingHours, settings, homePage, newsPosts] =
+  const [menuItems, openingHours, settings, homePage, newsPosts, galleryImages] =
     await Promise.all([
       getMenuItems(),
       getOpeningHours(),
       getSiteSettings(),
       getPublishedHomePage(),
       getNewsPosts(),
+      getGalleryImages(),
     ]);
 
   const jsonLd = restaurantJsonLd();
@@ -34,6 +36,7 @@ export default async function EnglishHomePage() {
         openingHours={openingHours}
         contactEmail={settings.contact_email}
         newsPosts={newsPosts}
+        galleryImages={galleryImages}
         locale="en"
       />
     </>

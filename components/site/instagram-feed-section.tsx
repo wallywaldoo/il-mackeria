@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BackgroundIllustration } from "@/components/site/background-illustration";
 import { ElfsightEmbed } from "@/components/site/elfsight-embed";
+import { GalleryImageSlider } from "@/components/site/gallery-image-slider";
 import Link from "next/link";
 import { InstagramIcon } from "@/components/icons/instagram-icon";
 import { SectionLabel } from "@/components/site/section-label";
@@ -10,16 +11,39 @@ import { ItalianFlagAccent } from "@/components/site/italian-flag-accent";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { DEFAULT_SECTION_CONTENT } from "@/lib/cms/defaults";
 import { SITE } from "@/lib/constants";
+import type { Locale } from "@/lib/i18n";
+import {
+  isMobileSiteLayout,
+  subscribeMobileSiteLayout,
+} from "@/lib/site-layout";
 import { cn } from "@/lib/utils";
 import type { InstagramSectionContent } from "@/types/cms-content";
+import type { GalleryImage } from "@/types/site";
 
 interface InstagramFeedSectionProps {
   content?: InstagramSectionContent;
+  galleryImages?: GalleryImage[];
+  locale?: Locale;
 }
 
-export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
+export function InstagramFeedSection({
+  content,
+  galleryImages = [],
+  locale = "sv",
+}: InstagramFeedSectionProps) {
   const c = content ?? DEFAULT_SECTION_CONTENT.instagram;
   const [feedReady, setFeedReady] = useState(false);
+  const [showDesktopFeed, setShowDesktopFeed] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      setShowDesktopFeed(!isMobileSiteLayout());
+    };
+
+    update();
+    return subscribeMobileSiteLayout(update);
+  }, []);
+
   const handleFeedReady = useCallback(() => {
     setFeedReady(true);
   }, []);
@@ -44,28 +68,34 @@ export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
           </div>
         </ScrollReveal>
 
-        <div
-          className={cn(
-            "instagram-feed-widget mt-8 w-full sm:mt-10",
-            feedReady && "is-ready",
-          )}
-        >
-          <ElfsightEmbed appId={c.elfsightAppId} onReady={handleFeedReady} />
+        <div className="lg:hidden">
+          <GalleryImageSlider images={galleryImages} locale={locale} />
         </div>
+
+        {showDesktopFeed ? (
+          <div
+            className={cn(
+              "instagram-feed-widget mt-8 hidden w-full sm:mt-10 lg:block",
+              feedReady && "is-ready",
+            )}
+          >
+            <ElfsightEmbed appId={c.elfsightAppId} onReady={handleFeedReady} />
+          </div>
+        ) : null}
 
         <ScrollReveal delay={0.1}>
           <div className="mt-6 max-lg:flex max-lg:justify-center lg:block">
-              <Link
-                href={SITE.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-burgundy uppercase transition-colors hover:text-burgundy-dark"
-              >
-                <InstagramIcon className="size-4" />
-                {c.linkLabel}
-              </Link>
-            </div>
-          </ScrollReveal>
+            <Link
+              href={SITE.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide text-burgundy uppercase transition-colors hover:text-burgundy-dark"
+            >
+              <InstagramIcon className="size-4" />
+              {c.linkLabel}
+            </Link>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

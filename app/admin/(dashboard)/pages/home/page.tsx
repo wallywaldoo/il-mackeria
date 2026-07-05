@@ -1,6 +1,7 @@
 import { PageBuilderShell } from "@/components/admin/page-builder/page-builder-shell";
 import { getEditableHomePage } from "@/lib/cms/get-home-page";
 import {
+  getAdminGalleryImages,
   getAdminMenuItems,
   getAdminNewsPosts,
   getAdminOpeningHours,
@@ -11,16 +12,18 @@ import { requirePanelAccess } from "@/lib/supabase/admin-auth";
 export default async function HomePageBuilderPage() {
   await requirePanelAccess();
 
-  const [homePage, menuItems, openingHours, settings, newsPosts] =
+  const [homePage, menuItems, openingHours, settings, newsPosts, galleryImages] =
     await Promise.all([
       getEditableHomePage(),
       getAdminMenuItems(),
       getAdminOpeningHours(),
       getAdminSiteSettings(),
       getAdminNewsPosts(),
+      getAdminGalleryImages(),
     ]);
 
   const publishedNews = newsPosts.filter((post) => post.is_published);
+  const publishedGallery = galleryImages.filter((image) => image.is_published);
 
   return (
     <PageBuilderShell
@@ -29,6 +32,7 @@ export default async function HomePageBuilderPage() {
       openingHours={openingHours}
       contactEmail={settings.contact_email}
       newsPosts={publishedNews}
+      galleryImages={publishedGallery}
     />
   );
 }

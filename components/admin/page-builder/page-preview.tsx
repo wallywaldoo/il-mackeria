@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PageRenderer } from "@/components/site/page-renderer";
 import { PreviewFrame } from "@/components/admin/page-builder/preview-frame";
 import type { HomePageSection } from "@/types/cms";
-import type { MenuItem, NewsPost, OpeningHour } from "@/types/site";
+import type { MenuItem, NewsPost, OpeningHour, GalleryImage } from "@/types/site";
 import { cn } from "@/lib/utils";
 
 interface PagePreviewProps {
@@ -13,6 +13,7 @@ interface PagePreviewProps {
   openingHours: OpeningHour[];
   contactEmail: string;
   newsPosts: NewsPost[];
+  galleryImages: GalleryImage[];
   viewport: "desktop" | "mobile";
   activeSectionId?: string;
 }
@@ -23,6 +24,7 @@ export function PagePreview({
   openingHours,
   contactEmail,
   newsPosts,
+  galleryImages,
   viewport,
   activeSectionId,
 }: PagePreviewProps) {
@@ -59,6 +61,7 @@ export function PagePreview({
       openingHours={openingHours}
       contactEmail={contactEmail}
       newsPosts={newsPosts}
+      galleryImages={galleryImages}
       preview
       activeSectionId={activeSectionId}
     />

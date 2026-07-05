@@ -20,7 +20,7 @@ import { isNewSectionId } from "@/lib/cms/merge-sections";
 import { validateHomePageSections } from "@/lib/cms/validate-sections";
 import { createClient } from "@/lib/supabase/client";
 import type { HomePageSection, PageRecord } from "@/types/cms";
-import type { MenuItem, NewsPost, OpeningHour } from "@/types/site";
+import type { MenuItem, NewsPost, OpeningHour, GalleryImage } from "@/types/site";
 import type { SectionSettings } from "@/lib/cms/schemas";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -31,6 +31,7 @@ interface PageBuilderShellProps {
   openingHours: OpeningHour[];
   contactEmail: string;
   newsPosts: NewsPost[];
+  galleryImages: GalleryImage[];
 }
 
 type SaveState = "idle" | "saving" | "saved" | "error";
@@ -42,6 +43,7 @@ export function PageBuilderShell({
   openingHours,
   contactEmail,
   newsPosts,
+  galleryImages,
 }: PageBuilderShellProps) {
   const router = useRouter();
   const { canEdit } = useAdminPermissions();
@@ -479,6 +481,7 @@ export function PageBuilderShell({
             openingHours={openingHours}
             contactEmail={contactEmail}
             newsPosts={newsPosts}
+            galleryImages={galleryImages}
             viewport={viewport}
             activeSectionId={
               canEdit && sidebarView === "edit" ? activeSection?.id : undefined
