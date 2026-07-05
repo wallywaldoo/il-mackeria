@@ -10,6 +10,7 @@ import {
   getLocaleFromPathname,
 } from "@/lib/i18n";
 import { getUi } from "@/lib/i18n/messages";
+import { isMobileSiteLayout } from "@/lib/site-layout";
 import { cn } from "@/lib/utils";
 
 interface LanguageSwitcherProps {
@@ -26,6 +27,12 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
   return (
     <a
       href={alternateHref}
+      onTouchEnd={(event) => {
+        if (!isMobileSiteLayout()) return;
+
+        event.preventDefault();
+        window.location.assign(alternateHref);
+      }}
       aria-label={
         switchingToEnglish ? copy.switchToEnglish : copy.switchToSwedish
       }

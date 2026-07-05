@@ -384,7 +384,6 @@
   }
 
   .instagram-feed-widget {
-    overflow: hidden;
     max-width: 100%;
   }
 
@@ -395,10 +394,8 @@
   }
 
   .instagram-feed-widget .es-layout,
-  .instagram-feed-widget .eapps-instagram-feed-posts,
-  .instagram-feed-widget [class*="layout"] {
+  .instagram-feed-widget .eapps-instagram-feed-posts {
     max-width: 100% !important;
-    overflow-x: hidden !important;
   }
 
   .instagram-feed-widget .es-layout img,

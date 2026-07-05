@@ -72,7 +72,7 @@ export function SiteHeader() {
         solid
           ? "border-b border-line/40 bg-cream-light/95 shadow-sm backdrop-blur-md"
           : isHome
-            ? "bg-gradient-to-b from-charcoal/35 via-charcoal/10 to-transparent backdrop-blur-[2px]"
+            ? "bg-gradient-to-b from-charcoal/35 via-charcoal/10 to-transparent max-lg:backdrop-blur-none lg:backdrop-blur-[2px]"
             : "border-b border-line/30 bg-cream-light/90 backdrop-blur-md",
       )}
     >

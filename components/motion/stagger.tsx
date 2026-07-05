@@ -10,8 +10,8 @@ import {
   easeOut,
   fadeUp,
   staggerContainer,
-  viewport,
 } from "@/lib/motion";
+import { useScrollReveal } from "@/components/motion/use-scroll-reveal";
 
 interface StaggerContainerProps extends HTMLMotionProps<"div"> {
   stagger?: number;
@@ -24,14 +24,15 @@ export function StaggerContainer({
   ...props
 }: StaggerContainerProps) {
   const reduceMotion = useReducedMotion();
+  const { ref, isVisible } = useScrollReveal(!!reduceMotion);
 
   return (
     <motion.div
+      ref={ref}
       className={className}
       variants={staggerContainer}
       initial={reduceMotion ? false : "hidden"}
-      whileInView="show"
-      viewport={viewport}
+      animate={reduceMotion ? undefined : isVisible ? "show" : "hidden"}
       transition={
         stagger
           ? { staggerChildren: reduceMotion ? 0 : stagger }

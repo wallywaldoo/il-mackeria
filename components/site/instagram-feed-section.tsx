@@ -3,7 +3,6 @@
 import { BackgroundIllustration } from "@/components/site/background-illustration";
 import { ElfsightEmbed } from "@/components/site/elfsight-embed";
 import Link from "next/link";
-import Script from "next/script";
 import { InstagramIcon } from "@/components/icons/instagram-icon";
 import { SectionLabel } from "@/components/site/section-label";
 import { ItalianFlagAccent } from "@/components/site/italian-flag-accent";
@@ -21,7 +20,6 @@ export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
 
   return (
     <section className="section-padding relative overflow-hidden bg-cream">
-      <Script src="https://elfsightcdn.com/platform.js" strategy="afterInteractive" />
       <BackgroundIllustration
         src="/images/illustrations/cocktail-line.png"
         surface="cream"
@@ -40,11 +38,11 @@ export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.1}>
-          <div className="instagram-feed-widget mt-8 min-h-[200px] w-full overflow-hidden sm:mt-10 sm:min-h-[260px]">
-            <ElfsightEmbed appId={c.elfsightAppId} />
-          </div>
+        <div className="instagram-feed-widget mt-8 min-h-[200px] w-full sm:mt-10 sm:min-h-[260px]">
+          <ElfsightEmbed appId={c.elfsightAppId} />
+        </div>
 
+        <ScrollReveal delay={0.1}>
           <div className="mt-6 max-lg:flex max-lg:justify-center lg:block">
               <Link
                 href={SITE.instagram}

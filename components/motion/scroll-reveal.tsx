@@ -1,8 +1,9 @@
 "use client";
 
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { DURATION, easeOut, fadeUp, viewport } from "@/lib/motion";
+import { DURATION, easeOut, fadeUp } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/components/motion/use-scroll-reveal";
 
 type RevealDirection = "up" | "left" | "right" | "fade";
 
@@ -26,15 +27,16 @@ export function ScrollReveal({
   ...props
 }: ScrollRevealProps) {
   const reduceMotion = useReducedMotion();
+  const { ref, isVisible } = useScrollReveal(!!reduceMotion);
   const variants = directionVariants[direction];
 
   return (
     <motion.div
+      ref={ref}
       className={cn("w-full min-w-0", className)}
       variants={variants}
-      initial={false}
-      whileInView={reduceMotion ? undefined : "show"}
-      viewport={viewport}
+      initial={reduceMotion ? false : "hidden"}
+      animate={reduceMotion ? undefined : isVisible ? "show" : "hidden"}
       transition={{
         duration: reduceMotion ? 0 : DURATION,
         ease: easeOut,
