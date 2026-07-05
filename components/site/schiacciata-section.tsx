@@ -27,21 +27,10 @@ export function SchiacciataSection({ content }: SchiacciataSectionProps) {
       />
       <div className="container-wide relative z-10">
         <div className="section-columns-2">
-          <ScrollReveal direction="left" className="section-media max-lg:text-center">
-            <SectionImage
-              src={c.image.url}
-              alt={c.image.alt}
-              aspect="portrait"
-              frameClassName="h-full ring-1 ring-cream/10"
-              innerClassName="lg:aspect-auto lg:h-full lg:min-h-0"
-              mobileShadow
-            />
-          </ScrollReveal>
-
           <ScrollReveal
             direction="right"
             delay={0.08}
-            className="max-lg:text-center lg:flex lg:h-full lg:flex-col lg:justify-center"
+            className="max-lg:text-center lg:order-2 lg:flex lg:h-full lg:flex-col lg:justify-center"
           >
             <div className="section-intro">
               <SectionLabel icon={Wheat} surface="dark">
@@ -57,6 +46,28 @@ export function SchiacciataSection({ content }: SchiacciataSectionProps) {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
+            <div className="section-media mt-8 w-full lg:hidden">
+              <SectionImage
+                src={c.image.url}
+                alt={c.image.alt}
+                aspect="portrait"
+                frameClassName="ring-1 ring-cream/10"
+                mobileShadow
+              />
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal
+            direction="left"
+            className="section-media hidden lg:order-1 lg:block"
+          >
+            <SectionImage
+              src={c.image.url}
+              alt={c.image.alt}
+              aspect="portrait"
+              frameClassName="h-full ring-1 ring-cream/10"
+              innerClassName="lg:aspect-auto lg:h-full lg:min-h-0"
+            />
           </ScrollReveal>
         </div>
       </div>

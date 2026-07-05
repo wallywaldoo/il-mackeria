@@ -16,9 +16,6 @@ import { getMenuSectionHref } from "@/lib/i18n";
 import { getUi } from "@/lib/i18n/messages";
 import type { HeroSectionContent } from "@/types/cms-content";
 
-const MOBILE_HERO_WIDTH = 1080;
-const MOBILE_HERO_HEIGHT = 1920;
-
 function HeroAddress({
   variant = "dark",
   label,
@@ -60,24 +57,23 @@ function MobileHero({
 
   return (
     <div className="hero-mobile-only relative w-full overflow-hidden bg-hero-green">
-      <div className="relative mx-auto w-full max-h-[70svh]">
+      <div className="relative h-[clamp(18rem,58svh,70svh)] w-full overflow-hidden [@media(max-height:700px)]:h-[clamp(16rem,52svh,58svh)]">
         <Image
           src={content.mobileImage.url}
           alt={content.mobileImage.alt}
-          width={MOBILE_HERO_WIDTH}
-          height={MOBILE_HERO_HEIGHT}
+          fill
           unoptimized
           priority
           loading="eager"
           sizes="100vw"
-          className="mx-auto block h-auto w-full max-h-[70svh] object-cover object-[center_48%]"
+          className="object-cover object-[center_48%]"
         />
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-charcoal/30 to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-32 bg-gradient-to-t from-charcoal/45 to-transparent"
           aria-hidden
         />
         <h1 className="sr-only">{content.srOnlyTitle}</h1>
-        <DesktopHeroEntrance className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2.5 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))]">
+        <DesktopHeroEntrance className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-2 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom,0px))] pt-4">
           <div className="flex w-full max-w-sm flex-col gap-2 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center sm:gap-3">
             <Button
               className="btn-site-lg w-full rounded-full bg-cream px-8 text-sm font-semibold tracking-[0.15em] text-charcoal uppercase shadow-lg sm:w-auto hover:bg-cream-light"
@@ -90,7 +86,7 @@ function MobileHero({
               variant="outline"
               className="btn-site-lg w-full rounded-full border-cream/80 bg-charcoal/20 px-8 text-sm font-semibold tracking-[0.15em] text-cream uppercase shadow-lg backdrop-blur-sm sm:w-auto hover:bg-charcoal/30 hover:text-cream"
             >
-              {content.bookingButtonLabel || (locale === "en" ? "Book catering" : "Boka catering")}
+              {content.bookingButtonLabel || copy.bookCatering}
             </BookingDialogButton>
           </div>
           <HeroAddress
@@ -139,7 +135,7 @@ function DesktopHero({
             variant="outline"
             className="btn-site-lg rounded-full border-cream/80 bg-charcoal/20 px-10 text-sm font-semibold tracking-[0.2em] text-cream uppercase shadow-lg backdrop-blur-sm hover:bg-charcoal/30 hover:text-cream"
           >
-            {content.bookingButtonLabel || (locale === "en" ? "Book catering" : "Boka catering")}
+            {content.bookingButtonLabel || copy.bookCatering}
           </BookingDialogButton>
         </div>
         <HeroAddress

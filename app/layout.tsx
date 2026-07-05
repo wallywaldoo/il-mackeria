@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { HtmlLang } from "@/components/site/html-lang";
 import "./globals.css";
 
 const heading = Cormorant_Garamond({
@@ -29,6 +30,7 @@ export default function RootLayout({
   return (
     <html lang="sv" className={`${heading.variable} ${body.variable} h-full`}>
       <body className="min-h-full max-w-[100vw] flex-col antialiased overflow-x-clip flex">
+        <HtmlLang />
         {children}
         <Toaster position="top-center" richColors />
       </body>

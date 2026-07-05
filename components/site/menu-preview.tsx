@@ -8,15 +8,21 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { StaggerContainer } from "@/components/motion/stagger";
 import { DEFAULT_SECTION_CONTENT } from "@/lib/cms/defaults";
 import { UtensilsCrossed } from "lucide-react";
+import type { Locale } from "@/lib/i18n";
 import type { MenuSectionContent } from "@/types/cms-content";
 import type { MenuItem } from "@/types/site";
 
 interface MenuPreviewProps {
   items: MenuItem[];
   content?: MenuSectionContent;
+  locale?: Locale;
 }
 
-export function MenuPreview({ items, content }: MenuPreviewProps) {
+export function MenuPreview({
+  items,
+  content,
+  locale = "sv",
+}: MenuPreviewProps) {
   const c = content ?? DEFAULT_SECTION_CONTENT.menu;
   const preview = items.slice(0, 6);
 
@@ -54,7 +60,14 @@ export function MenuPreview({ items, content }: MenuPreviewProps) {
 
         <StaggerContainer className="mt-10">
           {preview.map((item, i) => (
-            <MenuCard key={item.id} item={item} index={i} showThumbnail animated />
+            <MenuCard
+              key={item.id}
+              item={item}
+              index={i}
+              locale={locale}
+              showThumbnail
+              animated
+            />
           ))}
         </StaggerContainer>
       </div>

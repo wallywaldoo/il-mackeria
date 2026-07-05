@@ -12,6 +12,10 @@ import { normalizeSectionSettings } from "@/lib/cms/section-presets";
 import { isDarkSectionTheme } from "@/lib/cms/section-theme";
 import type { Locale } from "@/lib/i18n";
 import { getNewsPostHref } from "@/lib/i18n";
+import {
+  getNewsPostExcerpt,
+  getNewsPostTitle,
+} from "@/lib/i18n/localize";
 import type { SectionSettings } from "@/lib/cms/schemas";
 import type { NewsSectionContent } from "@/types/cms-content";
 import type { NewsPost } from "@/types/site";
@@ -87,7 +91,7 @@ export function NewsSection({
                   <div className="relative aspect-[16/10] overflow-hidden">
                     <Image
                       src={getNewsImage(post, i)}
-                      alt={post.title_sv}
+                      alt={getNewsPostTitle(post, locale)}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -110,7 +114,7 @@ export function NewsSection({
                       dark ? "text-white" : "text-charcoal",
                     )}
                   >
-                    {post.title_sv}
+                    {getNewsPostTitle(post, locale)}
                   </h3>
                   {post.published_at ? (
                     <time
@@ -131,7 +135,7 @@ export function NewsSection({
                       dark ? "text-white/80" : "text-warm-gray",
                     )}
                   >
-                    {post.excerpt_sv ?? post.content_sv.slice(0, 180)}
+                    {getNewsPostExcerpt(post, locale)}
                   </p>
                   <span className="relative mt-4 inline-block text-sm font-semibold tracking-wide text-burgundy uppercase">
                     {readMore} →

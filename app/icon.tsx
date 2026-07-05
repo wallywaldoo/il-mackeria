@@ -15,6 +15,8 @@ export default function Icon() {
           width: "100%",
           height: "100%",
           display: "flex",
+          borderRadius: 7,
+          overflow: "hidden",
         }}
       >
         <div style={{ flex: 1, background: "#009246" }} />

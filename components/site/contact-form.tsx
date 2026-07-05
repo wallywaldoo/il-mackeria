@@ -7,21 +7,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { contactSchema, type ContactFormData } from "@/lib/validations";
 import { siteFormFieldClass } from "@/lib/constants";
+import type { Locale } from "@/lib/i18n";
+import { getUi } from "@/lib/i18n/messages";
+import {
+  getContactSchema,
+  type ContactFormData,
+} from "@/lib/i18n/validations";
 
 interface ContactFormProps {
+  locale?: Locale;
   onSuccess?: () => void;
 }
 
-export function ContactForm({ onSuccess }: ContactFormProps) {
+export function ContactForm({ locale = "sv", onSuccess }: ContactFormProps) {
+  const copy = getUi(locale).forms;
+  const schema = getContactSchema(locale);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactSchema),
+    resolver: zodResolver(schema),
   });
 
   async function onSubmit(data: ContactFormData) {
@@ -34,7 +43,7 @@ export function ContactForm({ onSuccess }: ContactFormProps) {
 
       if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error ?? "Något gick fel");
+        throw new Error(err.error ?? copy.genericError);
       }
 
       const body = (await res.json()) as {
@@ -44,16 +53,14 @@ export function ContactForm({ onSuccess }: ContactFormProps) {
       };
 
       if (body.success && body.emailSent === false) {
-        toast.success(body.message ?? "Meddelandet är sparat.");
+        toast.success(body.message ?? copy.contactSaved);
       } else {
-        toast.success("Tack! Vi har tagit emot ditt meddelande.");
+        toast.success(copy.contactSuccess);
       }
       reset();
       onSuccess?.();
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Kunde inte skicka meddelande",
-      );
+      toast.error(err instanceof Error ? err.message : copy.sendError);
     }
   }
 
@@ -61,15 +68,28 @@ export function ContactForm({ onSuccess }: ContactFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="contact-name">Namn *</Label>
-          <Input id="contact-name" className={siteFormFieldClass} {...register("name")} />
+          <Label htmlFor="contact-name">
+            {copy.name} {copy.required}
+          </Label>
+          <Input
+            id="contact-name"
+            className={siteFormFieldClass}
+            {...register("name")}
+          />
           {errors.name && (
             <p className="text-xs text-destructive">{errors.name.message}</p>
           )}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="contact-email">E-post *</Label>
-          <Input id="contact-email" type="email" className={siteFormFieldClass} {...register("email")} />
+          <Label htmlFor="contact-email">
+            {copy.email} {copy.required}
+          </Label>
+          <Input
+            id="contact-email"
+            type="email"
+            className={siteFormFieldClass}
+            {...register("email")}
+          />
           {errors.email && (
             <p className="text-xs text-destructive">{errors.email.message}</p>
           )}
@@ -77,16 +97,29 @@ export function ContactForm({ onSuccess }: ContactFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="contact-subject">Ämne *</Label>
-        <Input id="contact-subject" className={siteFormFieldClass} {...register("subject")} />
+        <Label htmlFor="contact-subject">
+          {copy.subject} {copy.required}
+        </Label>
+        <Input
+          id="contact-subject"
+          className={siteFormFieldClass}
+          {...register("subject")}
+        />
         {errors.subject && (
           <p className="text-xs text-destructive">{errors.subject.message}</p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="contact-message">Meddelande *</Label>
-        <Textarea id="contact-message" rows={5} className={siteFormFieldClass} {...register("message")} />
+        <Label htmlFor="contact-message">
+          {copy.message} {copy.required}
+        </Label>
+        <Textarea
+          id="contact-message"
+          rows={5}
+          className={siteFormFieldClass}
+          {...register("message")}
+        />
         {errors.message && (
           <p className="text-xs text-destructive">{errors.message.message}</p>
         )}
@@ -98,7 +131,7 @@ export function ContactForm({ onSuccess }: ContactFormProps) {
         disabled={isSubmitting}
         className="btn-site-lg w-full rounded-full bg-burgundy hover:bg-burgundy-dark sm:w-auto"
       >
-        {isSubmitting ? "Skickar..." : "Skicka meddelande"}
+        {isSubmitting ? copy.submitting : copy.sendMessage}
       </Button>
     </form>
   );

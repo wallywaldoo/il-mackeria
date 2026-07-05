@@ -11,6 +11,12 @@ import {
 import type { MenuItem } from "@/types/site";
 import { ImageFrame } from "@/components/site/image-frame";
 import { fadeUp, DURATION, easeOut } from "@/lib/motion";
+import type { Locale } from "@/lib/i18n";
+import {
+  getMenuItemDescription,
+  getMenuItemName,
+} from "@/lib/i18n/localize";
+import { getUi } from "@/lib/i18n/messages";
 import { cn } from "@/lib/utils";
 
 const MENU_FALLBACK_IMAGES = [
@@ -23,6 +29,7 @@ const MENU_FALLBACK_IMAGES = [
 interface MenuCardProps {
   item: MenuItem;
   index?: number;
+  locale?: Locale;
   className?: string;
   compact?: boolean;
   showTemperature?: boolean;
@@ -40,6 +47,7 @@ function getMenuImage(item: MenuItem, index: number) {
 export function MenuCard({
   item,
   index = 0,
+  locale = "sv",
   className,
   compact = false,
   showTemperature = true,
@@ -48,9 +56,12 @@ export function MenuCard({
 }: MenuCardProps) {
   const [imageOpen, setImageOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const copy = getUi(locale).menuLabels;
   const isWarm = item.temperature === "varm";
   const num = String(index + 1).padStart(2, "0");
   const imageSrc = getMenuImage(item, index);
+  const name = getMenuItemName(item, locale);
+  const description = getMenuItemDescription(item, locale);
 
   const Wrapper = animated ? motion.article : "article";
 
@@ -82,12 +93,12 @@ export function MenuCard({
               <button
                 type="button"
                 onClick={() => setImageOpen(true)}
-                aria-label={`Visa bild av ${item.name_sv}`}
+                aria-label={`${copy.showImage} ${name}`}
                 className="relative size-full cursor-zoom-in transition-transform hover:scale-[1.03] focus-visible:ring-2 focus-visible:ring-burgundy focus-visible:outline-none"
               >
                 <Image
                   src={imageSrc}
-                  alt={item.name_sv}
+                  alt={name}
                   fill
                   className="object-cover"
                   sizes="80px"
@@ -97,11 +108,11 @@ export function MenuCard({
 
             <Dialog open={imageOpen} onOpenChange={setImageOpen}>
               <DialogContent className="max-w-[calc(100%-2.5rem)] border-none bg-transparent p-0 shadow-none ring-0 sm:max-w-2xl">
-                <DialogTitle className="sr-only">{item.name_sv}</DialogTitle>
+                <DialogTitle className="sr-only">{name}</DialogTitle>
                 <ImageFrame innerClassName="aspect-[4/3] w-full">
                   <Image
                     src={imageSrc}
-                    alt={item.name_sv}
+                    alt={name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 90vw, 672px"
@@ -119,7 +130,7 @@ export function MenuCard({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <h3 className="editorial-name font-heading text-lg font-semibold text-charcoal sm:text-xl md:text-2xl">
-              {item.name_sv}
+              {name}
             </h3>
             {showTemperature && (
               <span
@@ -130,24 +141,24 @@ export function MenuCard({
                     : "bg-italian-green/10 text-italian-green",
                 )}
               >
-                {isWarm ? "Varm" : "Kall"}
+                {isWarm ? copy.warm : copy.cold}
               </span>
             )}
           </div>
           {!compact && (
             <p className="mt-2 text-sm leading-relaxed text-warm-gray italic md:text-base">
-              {item.description_sv}
+              {description}
             </p>
           )}
           <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
             <span>
-              <span className="text-warm-gray">Hel </span>
+              <span className="text-warm-gray">{copy.full} </span>
               <span className="font-semibold text-charcoal">
                 {item.price_full} kr
               </span>
             </span>
             <span>
-              <span className="text-warm-gray">Halv </span>
+              <span className="text-warm-gray">{copy.half} </span>
               <span className="font-semibold text-charcoal">
                 {item.price_half} kr
               </span>

@@ -64,7 +64,7 @@ export function ContactDialogTrigger({
         </DialogHeader>
 
         <div className="mt-4">
-          <ContactForm onSuccess={() => setOpen(false)} />
+          <ContactForm locale={locale} onSuccess={() => setOpen(false)} />
         </div>
       </DialogContent>
     </Dialog>

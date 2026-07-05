@@ -12,6 +12,7 @@ import {
 import { BookingForm } from "@/components/site/booking-form";
 import { ItalianFlagAccent } from "@/components/site/italian-flag-accent";
 import type { Locale } from "@/lib/i18n";
+import { getUi } from "@/lib/i18n/messages";
 import { cn } from "@/lib/utils";
 
 const copy = {
@@ -52,7 +53,7 @@ export function BookingDialog({
         </DialogHeader>
 
         <div className="mt-4">
-          <BookingForm onSuccess={() => onOpenChange(false)} />
+          <BookingForm locale={locale} onSuccess={() => onOpenChange(false)} />
         </div>
       </DialogContent>
     </Dialog>
@@ -69,12 +70,13 @@ interface BookingDialogButtonProps {
 
 export function BookingDialogButton({
   className,
-  children = "Boka nu",
+  children,
   locale = "sv",
   variant = "default",
   onOpen,
 }: BookingDialogButtonProps) {
   const [open, setOpen] = useState(false);
+  const copy = getUi(locale);
 
   return (
     <>
@@ -88,7 +90,7 @@ export function BookingDialogButton({
           onOpen?.();
         }}
       >
-        {children}
+        {children ?? copy.bookNow}
       </Button>
 
       <BookingDialog open={open} onOpenChange={setOpen} locale={locale} />

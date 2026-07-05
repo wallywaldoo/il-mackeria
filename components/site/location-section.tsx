@@ -13,6 +13,12 @@ import { SITE } from "@/lib/constants";
 import { DEFAULT_SECTION_CONTENT } from "@/lib/cms/defaults";
 import { getSectionSurfaceClass } from "@/lib/cms/section-theme";
 import { normalizeSectionSettings } from "@/lib/cms/section-presets";
+import type { Locale } from "@/lib/i18n";
+import {
+  getOpeningHourLabel,
+  getOpeningHourNote,
+} from "@/lib/i18n/localize";
+import { getUi } from "@/lib/i18n/messages";
 import type { SectionSettings } from "@/lib/cms/schemas";
 import { cn } from "@/lib/utils";
 import type { LocationSectionContent } from "@/types/cms-content";
@@ -24,6 +30,7 @@ interface LocationSectionProps {
   showHeading?: boolean;
   embedded?: boolean;
   className?: string;
+  locale?: Locale;
   content?: LocationSectionContent;
   settings?: SectionSettings;
 }
@@ -62,7 +69,7 @@ function InfoBox({
 const boxSecondaryClass =
   "mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-burgundy transition-colors hover:text-burgundy-dark";
 
-function LocationMap() {
+function LocationMap({ mapTitle }: { mapTitle: string }) {
   const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
     SITE.address.full,
   )}&z=16&output=embed`;
@@ -71,7 +78,7 @@ function LocationMap() {
     <ScrollReveal delay={0.12}>
       <div className="overflow-hidden rounded-2xl border border-line/40 bg-cream-light surface-shadow">
         <iframe
-          title={`Karta till ${SITE.name}`}
+          title={mapTitle}
           src={mapSrc}
           className="h-[260px] w-full sm:h-[320px] md:h-[420px]"
           loading="lazy"
@@ -86,11 +93,19 @@ function LocationBoxes({
   openingHours,
   contactEmail,
   embedded = false,
+  locale = "sv",
 }: {
   openingHours: OpeningHour[];
   contactEmail: string;
   embedded?: boolean;
+  locale?: Locale;
 }) {
+  const copy = getUi(locale).location;
+  const address =
+    locale === "en"
+      ? `${SITE.address.street}, ${SITE.address.city}, ${copy.country}`
+      : SITE.address.full;
+
   return (
     <StaggerContainer
       className={cn(
@@ -99,8 +114,8 @@ function LocationBoxes({
       )}
     >
       <StaggerItem>
-        <InfoBox title="Adress" icon={<MapPin className="size-4" />}>
-        <p className="text-warm-gray">{SITE.address.full}</p>
+        <InfoBox title={copy.address} icon={<MapPin className="size-4" />}>
+        <p className="text-warm-gray">{address}</p>
         <Link
           href={SITE.googleMapsUrl}
           target="_blank"
@@ -108,13 +123,13 @@ function LocationBoxes({
           className={boxSecondaryClass}
         >
           <MapPin className="size-3.5" />
-          Öppna i Google Maps
+          {copy.openInMaps}
         </Link>
       </InfoBox>
       </StaggerItem>
 
       <StaggerItem>
-        <InfoBox title="Kontakt" icon={<Mail className="size-4" />}>
+        <InfoBox title={copy.contact} icon={<Mail className="size-4" />}>
         <a
           href={`mailto:${contactEmail}`}
           className="block text-warm-gray transition-colors hover:text-burgundy"
@@ -135,7 +150,7 @@ function LocationBoxes({
 
       <StaggerItem>
         <InfoBox
-        title="Öppettider"
+        title={copy.openingHours}
         icon={<Clock className="size-4" />}
         className={embedded ? undefined : "md:col-span-2 lg:col-span-1"}
       >
@@ -145,9 +160,11 @@ function LocationBoxes({
               key={h.id}
               className="border-b border-line/40 pb-3 last:border-0 last:pb-0"
             >
-              <span className="font-medium text-charcoal">{h.label_sv}</span>
+              <span className="font-medium text-charcoal">
+                {getOpeningHourLabel(h, locale)}
+              </span>
               {h.is_closed ? (
-                <span className="text-warm-gray"> – Stängt</span>
+                <span className="text-warm-gray"> – {copy.closed}</span>
               ) : (
                 <span className="text-warm-gray">
                   {" "}
@@ -157,15 +174,15 @@ function LocationBoxes({
             </li>
           ))}
         </ul>
-        {openingHours.map(
-          (h) =>
-            h.note_sv && (
-              <span key={`note-${h.id}`} className={boxSecondaryClass}>
-                <Sun className="size-3.5" />
-                {h.note_sv}
-              </span>
-            ),
-        )}
+        {openingHours.map((h) => {
+          const note = getOpeningHourNote(h, locale);
+          return note ? (
+            <span key={`note-${h.id}`} className={boxSecondaryClass}>
+              <Sun className="size-3.5" />
+              {note}
+            </span>
+          ) : null;
+        })}
       </InfoBox>
       </StaggerItem>
     </StaggerContainer>
@@ -178,11 +195,13 @@ export function LocationSection({
   showHeading = true,
   embedded = false,
   className,
+  locale = "sv",
   content,
   settings,
 }: LocationSectionProps) {
   const c = content ?? DEFAULT_SECTION_CONTENT.location;
   const s = normalizeSectionSettings("location", settings);
+  const copy = getUi(locale).location;
 
   const sectionContent = (
     <>
@@ -203,10 +222,11 @@ export function LocationSection({
           openingHours={openingHours}
           contactEmail={contactEmail}
           embedded={embedded}
+          locale={locale}
         />
         {!embedded && (
           <div className="mt-8">
-            <LocationMap />
+            <LocationMap mapTitle={copy.mapTitle} />
           </div>
         )}
       </div>

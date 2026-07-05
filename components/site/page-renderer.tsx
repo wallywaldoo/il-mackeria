@@ -13,6 +13,7 @@ import { LocationSection } from "@/components/site/location-section";
 import { NewsSection } from "@/components/site/news-section";
 import { ContentBlockSection } from "@/components/site/content-block-section";
 import { normalizeSectionSettings } from "@/lib/cms/section-presets";
+import { localizeSectionContent } from "@/lib/i18n/localize";
 import type { Locale } from "@/lib/i18n";
 import type { HomePageSection } from "@/types/cms";
 import type { MenuItem, NewsPost, OpeningHour } from "@/types/site";
@@ -77,7 +78,11 @@ export function PageRenderer({
               return (
                 <Hero
                   locale={locale}
-                  content={section.content as HeroSectionContent}
+                  content={localizeSectionContent(
+                    "hero",
+                    section.content as HeroSectionContent,
+                    locale,
+                  )}
                 />
               );
             case "flag_band":
@@ -85,27 +90,44 @@ export function PageRenderer({
             case "intro":
               return (
                 <IntroSection
-                  content={section.content as IntroSectionContent}
+                  content={localizeSectionContent(
+                    "intro",
+                    section.content as IntroSectionContent,
+                    locale,
+                  )}
                 />
               );
             case "schiacciata":
               return (
                 <SchiacciataSection
-                  content={section.content as SchiacciataSectionContent}
+                  content={localizeSectionContent(
+                    "schiacciata",
+                    section.content as SchiacciataSectionContent,
+                    locale,
+                  )}
                 />
               );
             case "menu":
               return (
                 <MenuPreview
                   items={menuItems}
-                  content={section.content as MenuSectionContent}
+                  locale={locale}
+                  content={localizeSectionContent(
+                    "menu",
+                    section.content as MenuSectionContent,
+                    locale,
+                  )}
                 />
               );
             case "news":
               return (
                 <NewsSection
                   posts={newsPosts}
-                  content={section.content as NewsSectionContent}
+                  content={localizeSectionContent(
+                    "news",
+                    section.content as NewsSectionContent,
+                    locale,
+                  )}
                   settings={normalizeSectionSettings(
                     "news",
                     section.settings,
@@ -126,13 +148,21 @@ export function PageRenderer({
             case "instagram":
               return (
                 <InstagramFeedSection
-                  content={section.content as InstagramSectionContent}
+                  content={localizeSectionContent(
+                    "instagram",
+                    section.content as InstagramSectionContent,
+                    locale,
+                  )}
                 />
               );
             case "booking":
               return (
                 <BookingSection
-                  content={section.content as BookingSectionContent}
+                  content={localizeSectionContent(
+                    "booking",
+                    section.content as BookingSectionContent,
+                    locale,
+                  )}
                   locale={locale}
                 />
               );
@@ -141,7 +171,12 @@ export function PageRenderer({
                 <LocationSection
                   openingHours={openingHours}
                   contactEmail={contactEmail}
-                  content={section.content as LocationSectionContent}
+                  locale={locale}
+                  content={localizeSectionContent(
+                    "location",
+                    section.content as LocationSectionContent,
+                    locale,
+                  )}
                   settings={normalizeSectionSettings(
                     "location",
                     section.settings,

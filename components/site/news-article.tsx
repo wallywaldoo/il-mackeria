@@ -15,12 +15,20 @@ interface NewsArticleProps {
 }
 
 function getLocalizedContent(post: NewsPost, locale: Locale) {
-  return {
-    title:
-      locale === "en" && post.title_en ? post.title_en : post.title_sv,
-    content:
-      locale === "en" && post.content_en ? post.content_en : post.content_sv,
-  };
+  const title =
+    locale === "en" && post.title_en ? post.title_en : post.title_sv;
+  const content =
+    locale === "en" && post.content_en ? post.content_en : post.content_sv;
+
+  if (locale === "en" && !post.title_en && post.title_sv === "Välkommen till il mackeria!") {
+    return {
+      title: "Welcome to il mackeria!",
+      content:
+        "We've opened our doors at Södra Hamngatan 20 in Strömstad. Come by and try our schiacciata – warm and cold, with fine Italian ingredients.",
+    };
+  }
+
+  return { title, content };
 }
 
 export function NewsArticle({ post, locale = "sv" }: NewsArticleProps) {
