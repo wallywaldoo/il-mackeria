@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { ImageFrame } from "@/components/site/image-frame";
 import type { Locale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import type { GalleryImage } from "@/types/site";
@@ -62,16 +63,20 @@ export function GalleryImageSlider({
             aria-roledescription="slide"
             aria-label={`${index + 1} av ${images.length}`}
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl surface-shadow-sm">
+            <ImageFrame
+              className="w-full"
+              shadow="lg"
+              innerClassName="aspect-[4/5]"
+            >
               <Image
                 src={image.url}
                 alt={getImageAlt(image, locale)}
                 fill
-                className="object-cover"
+                className="rounded-2xl object-cover"
                 sizes="(max-width: 1023px) 100vw, 0px"
                 priority={index === 0}
               />
-            </div>
+            </ImageFrame>
           </div>
         ))}
       </div>
