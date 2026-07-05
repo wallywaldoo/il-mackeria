@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import { BackgroundIllustration } from "@/components/site/background-illustration";
 import { ElfsightEmbed } from "@/components/site/elfsight-embed";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { ItalianFlagAccent } from "@/components/site/italian-flag-accent";
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { DEFAULT_SECTION_CONTENT } from "@/lib/cms/defaults";
 import { SITE } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import type { InstagramSectionContent } from "@/types/cms-content";
 
 interface InstagramFeedSectionProps {
@@ -17,6 +19,10 @@ interface InstagramFeedSectionProps {
 
 export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
   const c = content ?? DEFAULT_SECTION_CONTENT.instagram;
+  const [feedReady, setFeedReady] = useState(false);
+  const handleFeedReady = useCallback(() => {
+    setFeedReady(true);
+  }, []);
 
   return (
     <section className="section-padding relative overflow-hidden bg-cream">
@@ -38,8 +44,13 @@ export function InstagramFeedSection({ content }: InstagramFeedSectionProps) {
           </div>
         </ScrollReveal>
 
-        <div className="instagram-feed-widget mt-8 min-h-[200px] w-full sm:mt-10 sm:min-h-[260px]">
-          <ElfsightEmbed appId={c.elfsightAppId} />
+        <div
+          className={cn(
+            "instagram-feed-widget mt-8 w-full sm:mt-10",
+            feedReady && "is-ready",
+          )}
+        >
+          <ElfsightEmbed appId={c.elfsightAppId} onReady={handleFeedReady} />
         </div>
 
         <ScrollReveal delay={0.1}>

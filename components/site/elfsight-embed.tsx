@@ -2,78 +2,72 @@
 
 import { useEffect, useRef } from "react";
 
-const BRANDING_SELECTORS = [
-  ".eapps-widget-toolbar",
-  ".eapps-branding",
-  ".eapps-link",
-  ".eapps-instagram-feed-footer",
-  'a[href*="elfsight.com"]',
-];
-
-const FEED_READY_SELECTOR =
-  ".es-layout, .eapps-instagram-feed-posts, [class*='layout']";
-
-function hideBranding(widgetRoot: ParentNode) {
-  BRANDING_SELECTORS.forEach((selector) => {
-    widgetRoot.querySelectorAll(selector).forEach((node) => {
-      (node as HTMLElement).style.display = "none";
-    });
-  });
-
-  widgetRoot.querySelectorAll("*").forEach((node) => {
-    if (node.childElementCount > 0) return;
-
-    const text = node.textContent?.trim();
-    if (!text || !/free instagram feed widget/i.test(text)) return;
-
-    const parent = node.parentElement;
-    if (!parent || parent.closest(FEED_READY_SELECTOR)) return;
-
-    parent.style.display = "none";
-  });
-}
+const POST_IMAGE_SELECTOR =
+  ".eapps-instagram-feed-post img, .es-post img";
 
 interface ElfsightEmbedProps {
   appId: string;
+  onReady?: () => void;
 }
 
-export function ElfsightEmbed({ appId }: ElfsightEmbedProps) {
+export function ElfsightEmbed({ appId, onReady }: ElfsightEmbedProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!onReady) return;
+
     const widgetRoot = containerRef.current?.closest(".instagram-feed-widget");
     if (!widgetRoot) return;
 
-    let debounce: number | null = null;
-    let stopAt: number | null = null;
-    let observer: MutationObserver | null = null;
+    let done = false;
+    let settleTimer: number | null = null;
 
-    const run = () => {
-      hideBranding(widgetRoot);
+    const markReady = () => {
+      if (done) return;
 
-      if (widgetRoot.querySelector(FEED_READY_SELECTOR)) {
-        observer?.disconnect();
-        if (stopAt !== null) window.clearTimeout(stopAt);
+      const postImg = widgetRoot.querySelector(
+        POST_IMAGE_SELECTOR,
+      ) as HTMLImageElement | null;
+
+      if (!postImg?.complete || postImg.naturalWidth === 0) return;
+
+      if (settleTimer !== null) {
+        window.clearTimeout(settleTimer);
       }
+
+      settleTimer = window.setTimeout(() => {
+        if (done) return;
+        done = true;
+        onReady();
+        observer.disconnect();
+        window.clearInterval(poll);
+      }, 300);
     };
 
-    const schedule = () => {
-      if (debounce !== null) window.clearTimeout(debounce);
-      debounce = window.setTimeout(run, 150);
-    };
-
-    observer = new MutationObserver(schedule);
+    const observer = new MutationObserver(markReady);
     observer.observe(widgetRoot, { childList: true, subtree: true });
-
-    run();
-    stopAt = window.setTimeout(() => observer?.disconnect(), 12000);
+    const poll = window.setInterval(markReady, 150);
+    const fallback = window.setTimeout(() => {
+      if (done) return;
+      done = true;
+      onReady();
+      observer.disconnect();
+      window.clearInterval(poll);
+      if (settleTimer !== null) {
+        window.clearTimeout(settleTimer);
+      }
+    }, 8000);
+    markReady();
 
     return () => {
-      observer?.disconnect();
-      if (debounce !== null) window.clearTimeout(debounce);
-      if (stopAt !== null) window.clearTimeout(stopAt);
+      observer.disconnect();
+      window.clearInterval(poll);
+      window.clearTimeout(fallback);
+      if (settleTimer !== null) {
+        window.clearTimeout(settleTimer);
+      }
     };
-  }, []);
+  }, [onReady]);
 
   return (
     <div

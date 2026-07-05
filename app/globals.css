@@ -362,6 +362,7 @@
   .instagram-feed-widget .eapps-branding,
   .instagram-feed-widget .eapps-link,
   .instagram-feed-widget .eapps-instagram-feed-footer,
+  .instagram-feed-widget .eapps-instagram-feed-header-container,
   .instagram-feed-widget .eapps-instagram-feed-header,
   .instagram-feed-widget .es-header,
   .instagram-feed-widget a[href*="elfsight.com"] {
@@ -388,14 +389,25 @@
   .instagram-feed-widget {
     max-width: 100%;
     overflow: hidden;
-    contain: layout style;
   }
 
   @media (max-width: 1023px) {
     .instagram-feed-widget {
-      min-height: 280px;
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
+      min-height: 328px;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .instagram-feed-widget.is-ready {
+      opacity: 1;
+    }
+
+    .instagram-feed-widget .eapps-instagram-feed-posts-slider,
+    .instagram-feed-widget .eapps-instagram-feed-posts-slider-inner,
+    .instagram-feed-widget .es-layout-carousel,
+    .instagram-feed-widget .es-layout-carousel-content {
+      animation: none !important;
+      transition: none !important;
     }
   }
 
