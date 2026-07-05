@@ -1,0 +1,395 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@custom-variant mobile-site {
+  @media (max-width: 1023px), ((min-width: 1024px) and (orientation: portrait)) {
+    @slot;
+  }
+}
+
+@custom-variant desktop-site {
+  @media (min-width: 1024px) and (orientation: landscape) {
+    @slot;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --color-cream: var(--cream);
+  --color-cream-light: var(--cream-light);
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-dark: var(--burgundy-dark);
+  --color-italian-green: var(--italian-green);
+  --color-hero-green: var(--hero-green);
+  --color-green-muted: var(--green-muted);
+  --color-wood: var(--wood);
+  --color-charcoal: var(--charcoal);
+  --color-warm-gray: var(--warm-gray);
+  --color-line: var(--line);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --cream: #F4E3D2;
+  --cream-light: #FAF3EA;
+  --burgundy: #9E1728;
+  --burgundy-dark: #76101D;
+  --italian-green: #006B3F;
+  --hero-green: #474E24;
+  --green-muted: #3F5F4A;
+  --wood: #B9824A;
+  --charcoal: #1E1E1E;
+  --warm-gray: #7A6A5F;
+  --line: #D8C2AC;
+
+  --background: var(--cream-light);
+  --foreground: var(--charcoal);
+  --card: #ffffff;
+  --card-foreground: var(--charcoal);
+  --popover: #ffffff;
+  --popover-foreground: var(--charcoal);
+  --primary: var(--burgundy);
+  --primary-foreground: #ffffff;
+  --secondary: var(--cream);
+  --secondary-foreground: var(--charcoal);
+  --muted: var(--cream);
+  --muted-foreground: var(--warm-gray);
+  --accent: var(--cream);
+  --accent-foreground: var(--charcoal);
+  --destructive: #dc2626;
+  --border: var(--line);
+  --input: var(--line);
+  --ring: var(--burgundy);
+  --radius: 0.5rem;
+  --sidebar: var(--cream-light);
+  --sidebar-foreground: var(--charcoal);
+  --sidebar-primary: var(--burgundy);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--cream);
+  --sidebar-accent-foreground: var(--charcoal);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--burgundy);
+  --chart-1: var(--burgundy);
+  --chart-2: var(--italian-green);
+  --chart-3: var(--wood);
+  --chart-4: var(--green-muted);
+  --chart-5: var(--warm-gray);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans scroll-smooth overflow-x-clip;
+  }
+  body {
+    @apply overflow-x-clip max-w-[100vw];
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading), serif;
+  }
+}
+
+@layer utilities {
+  .section-padding {
+    @apply py-10 sm:py-16 md:py-24;
+  }
+
+  .page-hero-padding {
+    @apply pb-12 pt-28 sm:pb-16 sm:pt-32 md:pb-24 md:pt-40;
+  }
+  .container-narrow {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-6 md:px-8;
+  }
+
+  .section-intro {
+    @apply block w-full max-lg:text-center lg:text-left;
+  }
+
+  .section-body {
+    @apply w-full space-y-3 text-base leading-relaxed max-lg:text-center lg:text-left md:text-lg;
+  }
+
+  .section-media {
+    @apply relative w-full min-w-0 self-stretch;
+  }
+
+  .section-columns-12 {
+    @apply flex w-full flex-col items-stretch gap-8 max-lg:max-w-full lg:grid lg:grid-cols-12 lg:items-start lg:gap-12;
+  }
+
+  .section-columns-12-center {
+    @apply flex w-full flex-col items-stretch gap-10 max-lg:max-w-full lg:grid lg:grid-cols-12 lg:items-center lg:gap-16;
+  }
+
+  .section-columns-2 {
+    @apply flex w-full flex-col items-stretch gap-8 max-lg:max-w-full lg:grid lg:grid-cols-2 lg:items-stretch lg:gap-12;
+  }
+
+  .section-media-aspect {
+    @apply aspect-[4/3] w-full;
+  }
+
+  .section-media-aspect-portrait {
+    @apply aspect-[4/5] w-full lg:aspect-[4/3];
+  }
+
+  .hero-mobile-only {
+    display: block !important;
+  }
+
+  .hero-desktop-only {
+    display: none !important;
+  }
+
+  @media (min-width: 1024px) and (orientation: landscape) {
+    .hero-mobile-only {
+      display: none !important;
+    }
+
+    .hero-desktop-only {
+      display: block !important;
+    }
+  }
+
+  .text-section-title {
+    @apply font-heading text-2xl font-semibold sm:text-4xl md:text-5xl;
+  }
+
+  .touch-target {
+    @apply min-h-11 min-w-11;
+  }
+
+  .btn-site {
+    @apply min-h-11 px-6 text-sm;
+  }
+
+  .btn-site-lg {
+    @apply min-h-12 px-8 text-sm;
+  }
+  .italian-flag {
+    background: linear-gradient(to right, #009246 33.33%, #ffffff 33.33% 66.66%, #CE2B37 66.66%);
+  }
+
+  .text-display {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(2rem, 10vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  .text-watermark {
+    font-family: var(--font-heading), serif;
+    font-size: clamp(2.5rem, 10vw, 14rem);
+    line-height: 0.85;
+    letter-spacing: -0.03em;
+    opacity: 0.07;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .site-section {
+    @apply relative overflow-x-clip;
+  }
+
+  .text-label {
+    @apply text-xs font-semibold tracking-[0.25em] uppercase;
+  }
+
+  .pill-btn {
+    @apply rounded-full px-6 py-2.5 text-sm font-semibold tracking-wide transition-all;
+  }
+
+  .section-dark {
+    @apply bg-burgundy-dark text-cream;
+  }
+
+  .section-green {
+    @apply bg-italian-green text-cream;
+  }
+
+  .clip-diagonal {
+    clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+  }
+
+  .grain {
+    position: relative;
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+  }
+
+  .hero-split {
+    background: linear-gradient(
+      135deg,
+      var(--cream-light) 0%,
+      var(--cream-light) 48%,
+      var(--italian-green) 48%,
+      var(--italian-green) 100%
+    );
+  }
+
+  .editorial-row:hover .editorial-name {
+    @apply text-burgundy;
+  }
+
+  .editorial-name {
+    @apply transition-colors duration-300;
+  }
+
+  .surface-shadow {
+    box-shadow:
+      0 1px 2px rgb(30 30 30 / 0.05),
+      0 8px 24px -6px rgb(30 30 30 / 0.12);
+  }
+
+  .surface-shadow-sm {
+    box-shadow:
+      0 1px 2px rgb(30 30 30 / 0.04),
+      0 3px 10px -2px rgb(30 30 30 / 0.08);
+  }
+
+  .surface-shadow-dark {
+    box-shadow:
+      0 2px 6px rgb(0 0 0 / 0.18),
+      0 6px 18px -4px rgb(0 0 0 / 0.22);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hover-box {
+      transition: box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hover-box:hover {
+      box-shadow:
+        0 4px 8px rgb(30 30 30 / 0.08),
+        0 16px 32px -8px rgb(30 30 30 / 0.18);
+    }
+
+    .hover-box-dark:hover {
+      box-shadow:
+        0 4px 10px rgb(0 0 0 / 0.22),
+        0 14px 28px -6px rgb(0 0 0 / 0.32);
+    }
+  }
+
+  .instagram-feed-widget .eapps-instagram-feed-title-container,
+  .instagram-feed-widget .es-widget-title,
+  .instagram-feed-widget .eapps-widget-toolbar,
+  .instagram-feed-widget .eapps-branding,
+  .instagram-feed-widget .eapps-link,
+  .instagram-feed-widget .eapps-instagram-feed-header,
+  .instagram-feed-widget .es-header {
+    display: none !important;
+  }
+
+  .instagram-feed-widget .es-post,
+  .instagram-feed-widget .eapps-instagram-feed-post {
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  }
+
+  .instagram-feed-widget .es-post-media,
+  .instagram-feed-widget .eapps-instagram-feed-post-media,
+  .instagram-feed-widget .es-post-media-image,
+  .instagram-feed-widget .eapps-instagram-feed-post-image {
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+  }
+
+  .instagram-feed-widget {
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .instagram-feed-widget .elfsight-app-root,
+  .instagram-feed-widget [class*="eapps-"],
+  .instagram-feed-widget [class*="es-"] {
+    max-width: 100% !important;
+  }
+
+  .instagram-feed-widget .es-layout,
+  .instagram-feed-widget .eapps-instagram-feed-posts,
+  .instagram-feed-widget [class*="layout"] {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .instagram-feed-widget .es-layout img,
+  .instagram-feed-widget .eapps-instagram-feed-posts img,
+  .instagram-feed-widget .es-post-media-image img,
+  .instagram-feed-widget .eapps-instagram-feed-post-image img {
+    border-radius: 1rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

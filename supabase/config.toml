@@ -1,0 +1,20 @@
+project_id = "pqqepbqdnggtrkcmkezb"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15
+
+[auth]
+enabled = true
+site_url = "https://ilmackeria.se"
+additional_redirect_urls = [
+  "https://ilmackeria.se/admin/update-password",
+  "https://ilmackeria.se/admin/login",
+  "http://localhost:3000/admin/update-password",
+  "http://localhost:3000/admin/login",
+]
+
+[storage]
+enabled = true
