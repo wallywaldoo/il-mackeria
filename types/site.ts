@@ -48,6 +48,7 @@ export interface GalleryImage {
   alt_en: string | null;
   sort_order: number;
   is_published: boolean;
+  show_on_homepage: boolean;
 }
 
 export interface BookingRequest {

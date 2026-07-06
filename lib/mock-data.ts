@@ -134,6 +134,7 @@ export const MOCK_GALLERY: GalleryImage[] = [
     alt_en: null,
     sort_order: 1,
     is_published: true,
+    show_on_homepage: true,
   },
   {
     id: "2",
@@ -142,6 +143,7 @@ export const MOCK_GALLERY: GalleryImage[] = [
     alt_en: null,
     sort_order: 2,
     is_published: true,
+    show_on_homepage: true,
   },
   {
     id: "3",
@@ -150,6 +152,7 @@ export const MOCK_GALLERY: GalleryImage[] = [
     alt_en: null,
     sort_order: 3,
     is_published: true,
+    show_on_homepage: true,
   },
   {
     id: "4",
@@ -158,6 +161,7 @@ export const MOCK_GALLERY: GalleryImage[] = [
     alt_en: null,
     sort_order: 4,
     is_published: true,
+    show_on_homepage: true,
   },
 ];
 

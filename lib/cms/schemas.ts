@@ -69,7 +69,7 @@ export const instagramSectionSchema = z.object({
   label: z.string().min(1),
   heading: z.string().min(1),
   linkLabel: z.string().min(1),
-  elfsightAppId: z.string().min(1),
+  elfsightAppId: z.string().min(1).optional(),
 });
 
 export const bookingSectionSchema = z.object({

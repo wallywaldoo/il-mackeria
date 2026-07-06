@@ -132,6 +132,12 @@ export async function getGalleryImages(): Promise<GalleryImage[]> {
   return data as GalleryImage[];
 }
 
+export async function getHomepageGalleryImages(): Promise<GalleryImage[]> {
+  const images = await getGalleryImages();
+  const selected = images.filter((image) => image.show_on_homepage);
+  return selected.length > 0 ? selected : images;
+}
+
 export async function getAllGalleryImages(): Promise<GalleryImage[]> {
   const supabase = await getSupabase();
   if (!supabase) return MOCK_GALLERY;

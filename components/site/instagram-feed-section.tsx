@@ -1,8 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import { BackgroundIllustration } from "@/components/site/background-illustration";
-import { ElfsightEmbed } from "@/components/site/elfsight-embed";
 import { GalleryImageSlider } from "@/components/site/gallery-image-slider";
 import Link from "next/link";
 import { InstagramIcon } from "@/components/icons/instagram-icon";
@@ -12,11 +10,6 @@ import { ScrollReveal } from "@/components/motion/scroll-reveal";
 import { DEFAULT_SECTION_CONTENT } from "@/lib/cms/defaults";
 import { SITE } from "@/lib/constants";
 import type { Locale } from "@/lib/i18n";
-import {
-  isMobileSiteLayout,
-  subscribeMobileSiteLayout,
-} from "@/lib/site-layout";
-import { cn } from "@/lib/utils";
 import type { InstagramSectionContent } from "@/types/cms-content";
 import type { GalleryImage } from "@/types/site";
 
@@ -32,21 +25,6 @@ export function InstagramFeedSection({
   locale = "sv",
 }: InstagramFeedSectionProps) {
   const c = content ?? DEFAULT_SECTION_CONTENT.instagram;
-  const [feedReady, setFeedReady] = useState(false);
-  const [showDesktopFeed, setShowDesktopFeed] = useState(false);
-
-  useEffect(() => {
-    const update = () => {
-      setShowDesktopFeed(!isMobileSiteLayout());
-    };
-
-    update();
-    return subscribeMobileSiteLayout(update);
-  }, []);
-
-  const handleFeedReady = useCallback(() => {
-    setFeedReady(true);
-  }, []);
 
   return (
     <section className="section-padding relative overflow-hidden bg-cream">
@@ -68,20 +46,7 @@ export function InstagramFeedSection({
           </div>
         </ScrollReveal>
 
-        <div className="lg:hidden">
-          <GalleryImageSlider images={galleryImages} locale={locale} />
-        </div>
-
-        {showDesktopFeed ? (
-          <div
-            className={cn(
-              "instagram-feed-widget mt-8 hidden w-full sm:mt-10 lg:block",
-              feedReady && "is-ready",
-            )}
-          >
-            <ElfsightEmbed appId={c.elfsightAppId} onReady={handleFeedReady} />
-          </div>
-        ) : null}
+        <GalleryImageSlider images={galleryImages} locale={locale} />
 
         <ScrollReveal delay={0.1}>
           <div className="mt-6 max-lg:flex max-lg:justify-center lg:block">

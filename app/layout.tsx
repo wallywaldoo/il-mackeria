@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Cormorant_Garamond, Source_Sans_3 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { HtmlLang } from "@/components/site/html-lang";
@@ -31,10 +30,6 @@ export default function RootLayout({
   return (
     <html lang="sv" className={`${heading.variable} ${body.variable} h-full`}>
       <body className="flex min-h-full w-full flex-col overflow-x-clip antialiased">
-        <Script
-          src="https://elfsightcdn.com/platform.js"
-          strategy="afterInteractive"
-        />
         <HtmlLang />
         {children}
         <Toaster position="top-center" richColors />

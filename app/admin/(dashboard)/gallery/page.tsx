@@ -28,7 +28,7 @@ export default async function AdminGalleryPage() {
       <AdminPanel
         icon={ImageIcon}
         title="Bilder"
-        description={`${images.length} bilder`}
+        description={`${images.length} bilder · klicka på hus-ikonen för att välja startsidans bilder`}
       >
         <GalleryGrid images={images} />
       </AdminPanel>

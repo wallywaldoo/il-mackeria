@@ -1,6 +1,6 @@
 import { PageRenderer } from "@/components/site/page-renderer";
 import {
-  getGalleryImages,
+  getHomepageGalleryImages,
   getMenuItems,
   getNewsPosts,
   getOpeningHours,
@@ -19,7 +19,7 @@ export default async function EnglishHomePage() {
       getSiteSettings(),
       getPublishedHomePage(),
       getNewsPosts(),
-      getGalleryImages(),
+      getHomepageGalleryImages(),
     ]);
 
   const jsonLd = restaurantJsonLd();

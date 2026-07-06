@@ -44,7 +44,7 @@ export const SECTION_TYPE_META: Record<
   },
   instagram: {
     label: "Instagram",
-    description: "Sociala medier och Instagram-flöde",
+    description: "Galleri-slider och länk till Instagram",
     icon: Camera,
   },
   booking: {

@@ -24,6 +24,9 @@ export default async function HomePageBuilderPage() {
 
   const publishedNews = newsPosts.filter((post) => post.is_published);
   const publishedGallery = galleryImages.filter((image) => image.is_published);
+  const homepageGallery = publishedGallery.filter(
+    (image) => image.show_on_homepage,
+  );
 
   return (
     <PageBuilderShell
@@ -32,7 +35,9 @@ export default async function HomePageBuilderPage() {
       openingHours={openingHours}
       contactEmail={settings.contact_email}
       newsPosts={publishedNews}
-      galleryImages={publishedGallery}
+      galleryImages={
+        homepageGallery.length > 0 ? homepageGallery : publishedGallery
+      }
     />
   );
 }
