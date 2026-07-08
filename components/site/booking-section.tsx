@@ -26,7 +26,7 @@ export function BookingSection({ content, locale = "sv" }: BookingSectionProps) 
         surface="dark"
         width={520}
         height={520}
-        className="-left-3 bottom-0 w-56 rotate-[-4deg] sm:w-64 lg:-left-6 lg:w-[26rem]"
+        className="-left-3 top-14 w-56 rotate-[-4deg] sm:w-64 lg:-left-6 lg:top-auto lg:bottom-0 lg:w-[26rem]"
       />
       <div className="container-wide relative z-10">
         <div className="section-columns-12-center">

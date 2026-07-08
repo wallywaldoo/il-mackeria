@@ -23,7 +23,7 @@ export function SchiacciataSection({ content }: SchiacciataSectionProps) {
         surface="dark"
         width={520}
         height={520}
-        className="-bottom-10 -right-8 w-44 rotate-[-6deg] lg:-bottom-16 lg:-right-24 lg:w-[28rem]"
+        className="right-0 top-16 w-44 rotate-[-6deg] lg:-bottom-16 lg:-right-24 lg:top-auto lg:w-[28rem]"
       />
       <div className="container-wide relative z-10">
         <div className="section-columns-2">

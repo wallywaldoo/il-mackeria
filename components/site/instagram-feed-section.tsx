@@ -33,7 +33,7 @@ export function InstagramFeedSection({
         surface="cream"
         width={360}
         height={360}
-        className="-bottom-6 -left-10 w-44 rotate-[-6deg] lg:-bottom-8 lg:-left-16 lg:w-72"
+        className="-bottom-14 -left-10 w-44 rotate-[-6deg] lg:-bottom-8 lg:-left-16 lg:w-72"
       />
       <div className="container-wide relative z-10">
         <ScrollReveal>
